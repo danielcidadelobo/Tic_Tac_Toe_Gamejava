@@ -1,5 +1,7 @@
 package entities;
 
+import exceptions.PlayInputException;
+
 public class Board {
 	
 	private Object [][] mboard;
@@ -12,10 +14,21 @@ public class Board {
 			};
 	}
 	
-	public void setPlay(String play,String player) {
+	public void setPlay(String play,char character) throws PlayInputException {
+		if (play.length()!=2){
+			throw new PlayInputException("Invalid Size Coordinates");
+		}
 		int x = play.charAt(0)-'A';
 		int y = play.charAt(1)-'0'-1;
-		mboard[x][y]=player;
+		if (x != 'A' || x!='B' || x!='C' || y>2){
+			throw new PlayInputException("Invalid Coordinates");
+		}
+		if (mboard[x][y]==" ") {
+			mboard[x][y]=character;
+		}
+		else {
+			throw new PlayInputException("Coordinates already used");
+		}
 	}
 	
 	public String showBoard() {
