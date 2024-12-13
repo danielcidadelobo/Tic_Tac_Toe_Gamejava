@@ -14,17 +14,30 @@ public class Board {
 			};
 	}
 	
-	public void setPlay(String play,char character) throws PlayInputException {
+	
+	public Object getElement(int line,int collum) {
+		return mboard[line][collum];
+	}
+	
+	public void setElement(int line,int collumn,char character) {
+		mboard[line][collumn]=character;
+	}
+	
+	public boolean isFree(int line,int collumn) {
+		return mboard[line][collumn]==" ";
+	}
+
+	public void setUserPlay(String play,char character) throws PlayInputException {
 		if (play.length()!=2){
 			throw new PlayInputException("Invalid Size Coordinates");
 		}
 		int x = play.charAt(0)-'A';
 		int y = play.charAt(1)-'0'-1;
-		if (x != 'A' || x!='B' || x!='C' || y>2){
+		if ((x == 'A' || x=='B' || x=='C') && y>0 && y<3){
 			throw new PlayInputException("Invalid Coordinates");
 		}
-		if (mboard[x][y]==" ") {
-			mboard[x][y]=character;
+		if (isFree(x,y)){
+			setElement(x,y,character);
 		}
 		else {
 			throw new PlayInputException("Coordinates already used");
