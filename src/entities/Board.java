@@ -4,18 +4,16 @@ import exceptions.PlayInputException;
 
 public class Board {
 	
-	private Object [][] mboard;
+	private char [][] mboard;
 	
 	public Board() {
-		this.mboard = new Object [][] {
-			{" "," "," "},
-			{" "," "," "},
-			{" "," "," "},
-			};
-	}
-	
-	
-	public Object getElement(int line,int collum) {
+		this.mboard = new char[][] {
+			{' ', ' ', ' '},
+			{' ', ' ', ' '},
+			{' ', ' ', ' '}
+		};
+	}	
+	public char getElement(int line,int collum) {
 		return mboard[line][collum];
 	}
 	
@@ -24,7 +22,7 @@ public class Board {
 	}
 	
 	public boolean isFree(int line,int collumn) {
-		return mboard[line][collumn]==" ";
+		return mboard[line][collumn]==' ';
 	}
 
 	public void setUserPlay(String play,char character) throws PlayInputException {
@@ -33,7 +31,7 @@ public class Board {
 		}
 		int x = play.charAt(0)-'A';
 		int y = play.charAt(1)-'0'-1;
-		if ((x == 'A' || x=='B' || x=='C') && y>0 && y<3){
+		if ((x <0 || x>=3 || x=='C') && y>0 && y<3){
 			throw new PlayInputException("Invalid Coordinates");
 		}
 		if (isFree(x,y)){

@@ -12,7 +12,7 @@ public class Program {
 	public static void main(String[] args) {
 		
 		Scanner sc = new Scanner(System.in);
-		boolean win=false;
+		boolean end=false;
 		
 		System.out.println("Tic Tac Toe Game!");
 		System.out.println("");
@@ -22,8 +22,16 @@ public class Program {
 			System.out.print("Try Again: ");
 			userChar=sc.next().charAt(0);
 		}
-		char character=userChar;
+		int selectPlayer=1;
+		char botCharacter='X';
+		
+		if (userChar == 'X'){
+			selectPlayer = 0;
+			botCharacter='0';
+		}
+
 		char winner='f';
+
 		
 		Board board=new Board();
 		Game game=new Game();
@@ -33,29 +41,37 @@ public class Program {
 		System.out.println(board.showBoard());
 		System.out.println();
 		try {
-			while (win==false) {
-				if (character=='X') {
+			while (end==false) {
+				if (selectPlayer==0) {
 					System.out.print("Coordinate: ");
 					sc.nextLine();
 					String play= sc.nextLine();
-					board.setUserPlay(play,character);
+					board.setUserPlay(play,userChar);
 					System.out.println(board.showBoard());
-					character='0';
+					selectPlayer=1;
 				}
-				else if (character=='0') {
-					player.setBotPlay(board,character);
+				else if (selectPlayer==1) {
+					player.setBotPlay(board,userChar,botCharacter);
 					System.out.println(board.showBoard());
-					character='X';
+					selectPlayer=0;
 				}
-				if (game.end(board)=='X'){
-					win = true;
-					winner='X';
-				}
-				else if (game.end(board)=='0'){
-					win = true;
-					winner='0';
+				char endResult = game.end(board);
+				
+				if (endResult != 'C' && endResult!=' ') {
+					end = true; 
+					winner = endResult; 
 				}
 				System.out.println();		
+			}
+			System.out.println();
+			if (winner==userChar){
+				System.out.println("You Won!");
+			}
+			else if (winner==botCharacter){
+				System.out.println("You lost!");
+			}
+			else {
+				System.out.println("Tie!");
 			}
 		}	
 			
@@ -63,18 +79,8 @@ public class Program {
 			System.out.println("Error: " + e.getMessage());
 		}
 		finally {
-			System.out.println();
-			if (winner==userChar){
-				System.out.println("You Won!");
-			}
-			else{
-				System.out.println("You lost!");
-			}
 			sc.close();
 		}
-		
-
-		System.out.println(board.showBoard());
 	}
 
 }
